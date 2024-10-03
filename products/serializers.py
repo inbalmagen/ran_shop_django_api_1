@@ -7,9 +7,14 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(many=True, read_only=True)  # Nested serializer
-    
+    categories = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), many=True)
+
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['id', 'name', 'description', 'price', 'image', 'categories']
 
+    def create(self, validated_data):
+        categories = validated_data.pop('categories')
+        product = Product.objects.create(**validated_data)
+        product.categories.set(categories)
+        return product

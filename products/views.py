@@ -20,10 +20,10 @@ def product_list(request):
     if request.method == 'GET':
         category_id = request.GET.get('category_id')
         if category_id:
-            # Get the category object
-            category = Category.objects.get(id=category_id)        
+            # Get the category object            
+            foundCategory = Category.objects.get(id=category_id)        
             # Filter products that belong to the selected category
-            products = Product.objects.filter(category=category)
+            products = Product.objects.filter(categories=foundCategory)
         else:
             products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)

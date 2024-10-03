@@ -49,7 +49,13 @@
             <div class="form-group">
                 <label for="productImage">Product Image</label>
                 <input type="file" class="form-control" id="productImage" accept="image/*" required>
-            </div>        
+            </div>
+            <div class="form-group">
+                <label for="productCategories">Categories</label>
+                <select multiple class="form-control" id="productCategories" required>
+                    <!-- Categories will be dynamically inserted here -->
+                </select>
+            </div>                    
             <button type="submit" class="btn btn-primary">Add Product</button>
         </form>
     </div>
@@ -67,12 +73,17 @@
 
             console.log(response.data)
             const categoryList = document.getElementById('category-list');
+            const categorySelect = document.getElementById('productCategories');
             categoryList.innerHTML = '';
+            categorySelect.innerHTML = '';
+
             for (let i = 0; i < categories.length; i++) {
                 categoryList.innerHTML += `
                 <a href="#" class="badge badge-primary mr-2 d-inline" onclick="fetchProducts(${categories[i].id})">
                     ${categories[i].name} - ${categories[i].popularity}
-                </a>`;            
+                </a>`;  
+                categorySelect.innerHTML += `
+                <option value="${categories[i].id}">${categories[i].name}</option>`;          
             }
         }
 
@@ -93,7 +104,7 @@
                     const productItem = document.createElement('a');
                     productItem.className = 'list-group-item list-group-item-action';
                     productItem.href = `/front/product.html?id=${product.id}`;
-                    const categoryNames = product.category.map(cat => cat.name).join(', ');
+                    const categoryNames = product.categories.map(cat => cat.name).join(', ');
                     productItem.innerHTML = `<strong>${product.name}</strong> - $${product.price} - ${categoryNames}`;
                     productItem.innerHTML += `<img src="${HOST}/${product.image}/" class="product-image"/>`
                     // Create delete link with an onclick function
@@ -132,12 +143,18 @@
             const description = document.getElementById('productDescription').value;
             const price = document.getElementById('productPrice').value;
             const image = document.getElementById('productImage').files[0];
+            // const categories = Array.from(document.getElementById('productCategories').selectedOptions).map(option => option.value);
+            const categories = Array.from(document.getElementById('productCategories').selectedOptions).map(option => parseInt(option.value, 10));
+
 
             const formData = new FormData();
             formData.append('name', name);
             formData.append('description', description);
             formData.append('price', price);
             formData.append('image', image);
+            categories.forEach(category => formData.append('categories', category)); // Append each category ID individually
+            // formData.append('categories', JSON.stringify(categories)); // Send categories as JSON string
+            // formData.append('categories', categories); // Send categories as JSON string
 
             try {
                 await axios.post(`${HOST}/products/`, formData, {
@@ -145,9 +162,10 @@
                         'Content-Type': 'multipart/form-data'
                     }
                 }); // Replace with your actual API URL                fetchProducts(); // Refresh product list
+                fetchProducts(); // Refresh product list
                 document.getElementById('add-product-form').reset(); // Reset form fields
             } catch (error) {
-                console.error('Error adding product:', error);
+                console.error('Error adding product:', error.response ? error.response.data : error.message);
                 alert('Failed to add product.');
             }
         }
