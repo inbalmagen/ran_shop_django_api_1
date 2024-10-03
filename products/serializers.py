@@ -6,8 +6,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+class CategorySerializerProduct(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
 class ProductSerializer(serializers.ModelSerializer):
-    categories = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), many=True)
+    categories = CategorySerializerProduct(many=True)
+    # categories = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), many=True)
 
     class Meta:
         model = Product
