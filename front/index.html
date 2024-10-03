@@ -12,12 +12,40 @@
         }
         .category-item {
             display: inline-block;
+            margin: 10px;
+            text-align: center;
         }
-        .product-image {
-            max-width: 100px; /* Adjust the width as needed */
-            max-height: 100px; /* Adjust the height as needed */
-            object-fit: contain; /* Maintains aspect ratio */
+
+        .category-link {
+            text-decoration: none;
+            color: inherit;
         }
+
+        .category-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .category-name {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .category-link.selected {
+            border: 5px solid #007BFF;
+            border-radius: 5px;
+        }
+
+        .category-item.selected {
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -79,13 +107,39 @@
 
             for (let i = 0; i < categories.length; i++) {
                 categoryList.innerHTML += `
-                <img src="${HOST}/${categories[i].image}/" class="category-image"/>
-                <a href="#" class="badge badge-primary mr-2 d-inline" onclick="fetchProducts(${categories[i].id})">
-                    ${categories[i].name} - ${categories[i].popularity}
-                </a>`;  
+                <div id="cat${categories[i].id}" class="category-item">
+                    <a href="#" class="category-link" onclick="selectCategory(${categories[i].id})">
+                    <img src="${HOST}/${categories[i].image}/" class="category-image"/>
+                    <span class="category-name">${categories[i].name} - ${categories[i].popularity}</span>
+                    </a>
+                </div>`;  
                 categorySelect.innerHTML += `
                 <option value="${categories[i].id}">${categories[i].name}</option>`;          
             }
+        }
+
+        function selectCategory(categoryId) {
+            const categoryLinks = document.querySelectorAll('.category-item');
+            categoryLinks.forEach(link => link.classList.remove('selected'));
+
+            const selectedLink =  document.getElementById(`cat${categoryId}`);
+            if (selectedLink) {
+                selectedLink.classList.add('selected');
+            }
+
+            fetchProducts(categoryId);
+        }
+
+        function selectCategory1(categoryId) {
+            const categoryLinks = document.querySelectorAll('.category-link');
+            categoryLinks.forEach(link => link.classList.remove('selected'));
+
+            const selectedLink = document.querySelector(`.category-link[onclick="selectCategory(${categoryId})"]`);
+            if (selectedLink) {
+                selectedLink.classList.add('selected');
+            }
+
+            fetchProducts(categoryId);
         }
 
         async function fetchProducts(category_id) {
