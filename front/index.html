@@ -35,16 +35,13 @@
             font-size: 14px;
             font-weight: bold;
         }
-        
-        .category-link.selected {
-            border: 5px solid #007BFF;
-            border-radius: 5px;
-        }
 
         .category-item.selected {
             border: 2px solid #007BFF;
             border-radius: 5px;
         }
+
+        
 
     </style>
 </head>
@@ -130,17 +127,6 @@
             fetchProducts(categoryId);
         }
 
-        function selectCategory1(categoryId) {
-            const categoryLinks = document.querySelectorAll('.category-link');
-            categoryLinks.forEach(link => link.classList.remove('selected'));
-
-            const selectedLink = document.querySelector(`.category-link[onclick="selectCategory(${categoryId})"]`);
-            if (selectedLink) {
-                selectedLink.classList.add('selected');
-            }
-
-            fetchProducts(categoryId);
-        }
 
         async function fetchProducts(category_id) {
             try {
@@ -197,8 +183,7 @@
             const name = document.getElementById('productName').value;
             const description = document.getElementById('productDescription').value;
             const price = document.getElementById('productPrice').value;
-            const image = document.getElementById('productImage').files[0];
-            // const categories = Array.from(document.getElementById('productCategories').selectedOptions).map(option => option.value);
+            const image = document.getElementById('productImage').files[0];           // const categories = Array.from(document.getElementById('productCategories').selectedOptions).map(option => option.value);
             const categories = Array.from(document.getElementById('productCategories').selectedOptions).map(option => parseInt(option.value, 10));
 
 
@@ -208,8 +193,6 @@
             formData.append('price', price);
             formData.append('image', image);
             categories.forEach(category => formData.append('categories', category)); // Append each category ID individually
-            // formData.append('categories', JSON.stringify(categories)); // Send categories as JSON string
-            // formData.append('categories', categories); // Send categories as JSON string
 
             try {
                 await axios.post(`${HOST}/products/`, formData, {
