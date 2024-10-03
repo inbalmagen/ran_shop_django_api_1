@@ -79,6 +79,7 @@
 
             for (let i = 0; i < categories.length; i++) {
                 categoryList.innerHTML += `
+                <img src="${HOST}/${categories[i].image}/" class="category-image"/>
                 <a href="#" class="badge badge-primary mr-2 d-inline" onclick="fetchProducts(${categories[i].id})">
                     ${categories[i].name} - ${categories[i].popularity}
                 </a>`;  
