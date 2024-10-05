@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from products.models import Category, Product
-from products.serializers import CategorySerializer, ProductSerializer
+from products.serializers import CategorySerializer, ProductSerializer, ProductSerializerGet
 from rest_framework.generics import get_object_or_404
 
 @api_view(['GET'])
@@ -26,7 +26,7 @@ def product_list(request):
             products = Product.objects.filter(categories=foundCategory)
         else:
             products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
+        serializer = ProductSerializerGet(products, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
