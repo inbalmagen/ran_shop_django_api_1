@@ -9,7 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
-static/images/
+# static/images/
 develop-eggs/
 dist/
 downloads/
