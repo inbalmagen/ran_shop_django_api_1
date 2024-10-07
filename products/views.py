@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from products.models import Category, Product
-from products.serializers import CategorySerializer, ProductSerializer, ProductSerializerGet
+from products.models import Cart, Category, Product
+from products.serializers import CartSerializer, CategorySerializer, ProductSerializer, ProductSerializerGet
 from rest_framework.generics import get_object_or_404
 
 @api_view(['GET'])
@@ -59,3 +59,38 @@ def product_detail(request, id):
     elif request.method == 'DELETE':
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+@api_view(['POST'])
+def add_to_cart(request):
+    product_id = request.data.get('product_id')
+    quantity = request.data.get('quantity', 1)
+
+    if not product_id:
+        return Response({'error': 'Product ID is required'}, status=400)
+
+    product = get_object_or_404(Product, id=product_id)
+
+    # Get or create the cart for the session
+    cart_id = request.session.get('cart_id')
+    if cart_id:
+        cart = get_object_or_404(Cart, id=cart_id)
+    else:
+        cart = Cart.objects.create()
+        request.session['cart_id'] = cart.id
+
+    # Add product to cart
+    for _ in range(quantity):
+        cart.products.add(product)
+
+    cart_serializer = CartSerializer(cart)
+    return Response(cart_serializer.data)
+
+@api_view(['GET'])
+def view_cart(request):
+    cart_id = request.session.get('cart_id')
+    if not cart_id:
+        return Response({'error': 'Cart is empty'}, status=400)
+
+    cart = get_object_or_404(Cart, id=cart_id)
+    cart_serializer = CartSerializer(cart)
+    return Response(cart_serializer.data)

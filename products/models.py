@@ -18,3 +18,13 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.price}"
+    
+class Cart(models.Model):
+    products = models.ManyToManyField(Product)
+
+    def __str__(self):
+        return f"Cart {self.id}"
+
+    def total_price(self):
+        total = sum(product.price for product in self.products.all())
+        return total
