@@ -31,13 +31,13 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://myshop.onrender.com',
+    'https://myshop2024.onrender.com',
 ]
 
 ALLOWED_HOSTS = ['myshop.onrender.com']
-CSRF_TRUSTED_ORIGINS = ['https://myshop.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://myshop2024.onrender.com']
 CORS_ALLOWED_ORIGINS = [
-    'https://myshop.onrender.com',
+    'https://myshop2024.onrender.com',
 ]
 
 
