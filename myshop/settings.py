@@ -27,15 +27,19 @@ SECRET_KEY = 'django-insecure-v*e5rqnvdh++&xh@-oy^*bz!2=k+3s^*#aa9f^qm$f&tu$g@^7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'ran-shop-django-api-1.onrender.com',
-]
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ran-shop-django-api-1.onrender.com',
+    'https://myshop.onrender.com',
 ]
+
+ALLOWED_HOSTS = ['myshop.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://myshop.onrender.com']
+CORS_ALLOWED_ORIGINS = [
+    'https://myshop.onrender.com',
+]
+
 
 # Application definition
 
