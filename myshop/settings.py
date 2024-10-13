@@ -23,13 +23,18 @@ DEBUG = True
 CSRF_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://myshop2024.onrender.com',
+    'https://my-shop-2024-rpso.onrender.com',
 ]
 
-ALLOWED_HOSTS = ['my-shop-2024-rpso.onrender.com']
+ALLOWED_HOSTS = [
+    'my-shop-2024-rpso.onrender.com',
+    '127.0.0.1'
+]
+
 CSRF_TRUSTED_ORIGINS = ['https://my-shop-2024-rpso.onrender.com']
 CORS_ALLOWED_ORIGINS = [
     'https://my-shop-2024-rpso.onrender.com',
+    
 ]
 
 
