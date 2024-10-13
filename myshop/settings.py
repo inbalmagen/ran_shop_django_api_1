@@ -26,10 +26,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://myshop2024.onrender.com',
 ]
 
-ALLOWED_HOSTS = ['myshop.onrender.com']
-CSRF_TRUSTED_ORIGINS = ['https://myshop2024.onrender.com']
+ALLOWED_HOSTS = ['my-shop-2024-rpso.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://my-shop-2024-rpso.onrender.com']
 CORS_ALLOWED_ORIGINS = [
-    'https://myshop2024.onrender.com',
+    'https://my-shop-2024-rpso.onrender.com',
 ]
 
 
